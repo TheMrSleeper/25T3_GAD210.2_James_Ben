@@ -2194,7 +2194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HOST GAME
+  m_text: HOST CONNECTION
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -2323,7 +2323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JOIN BY IP
+  m_text: CONNECT TO NETWORK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}

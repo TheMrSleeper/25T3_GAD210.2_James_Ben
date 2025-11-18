@@ -561,8 +561,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -15.004974}
-  m_SizeDelta: {x: 0, y: 30.01001}
+  m_AnchoredPosition: {x: 0, y: -625.00507}
+  m_SizeDelta: {x: 0, y: 1250.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &661096351
 MonoBehaviour:
@@ -584,16 +584,42 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "[CONSOLE PROTOCOL]\r\n\r\n\u2022 Two engineers in separate compartments.\r\n\u2022
-    Limited comms: single-word transmissions.\r\n\u2022 Each turn: respond to a system
-    alert, then send a code (e.g., ASSIST, STABLE, DECOY).\r\n\u2022 Altruistic vs.
-    self-preserving choices affect both compartments\u2019 supplies.\r\n\u2022 Survive
-    by maintaining enough supplies by final diagnostic.\r\n\r\nLAN VERSION NOTES
-    (Unity Build):\r\n\u2022 One player hosts; the other discovers & joins via LAN.\r\n\u2022
-    Messages and events are synchronized between clients."
+  m_text: "== [OPERATIONS MANUAL // DAMAGE-CONTROL SIMULATOR] ==\nVessel Status:
+    Unstable\r\nCrew Count: 2 (Isolated in Compartments A & B)\r\nCommunication Link:
+    Text-Only / Severely Degraded\r\nPrimary Objective: Ensure at least one engineer
+    survives.\r\n\r\n> OVERVIEW\r\nThe vessel has suffered critical systems damage.
+    Two engineers remain sealed in\r\nseparate compartments with limited supplies
+    and failing structural integrity. A \r\nshared damage-control terminal enables
+    restricted communication and emergency \r\nactions.\r\n\r\n> TURN ORDER\r\nEngineers
+    take actions in alternating turns.\r\nOnly one engineer may issue system commands
+    at a time.\r\n\r\nOn your turn:\r\n1. A system fault or engineering event will
+    be routed to your terminal.\r\n2. You must choose a response from the available
+    protocols.\r\n3. Your choice will affect:\r\n   - Your compartment\u2019s structural
+    INTEGRITY\r\n   - Your usable emergency SUPPLIES\r\n   - The other engineer\u2019s
+    INTEGRITY and SUPPLIES (positively or negatively)\r\n4. After resolving the event,
+    you must transmit a short message to the other compartment.\n\n[WARNING] Communication
+    terminals damaged; sent messages may not be longer than one word or exceed a
+    given character limit.\r\n\r\n> INFORMATION LIMITATIONS\r\n- Your terminal displays
+    exact readouts for YOUR compartment.\r\n- Readouts for the OTHER compartment
+    are approximate only.\n\r\n  [WARNING] Scanners damaged; expect inaccurate or
+    unstable data.\n\r\n- You and the other engineer cannot see each other\u2019s
+    actions or exact values and priotising your own systems may even allow for a
+    faster recovery.\r\n\r\n> SURVIVAL REQUIREMENTS\r\nAt mission end, each engineer
+    undergoes a final survival diagnostic based on:\r\n- Remaining compartment INTEGRITY\r\n-
+    Remaining SUPPLIES\r\n- Calculated survival likelihood under current conditions\r\n\r\nNOTE:\r\nOnly
+    ONE surviving engineer is required for mission success.\r\nReactor failsafes
+    need a single living operator to initiate retrieval protocols.\r\nCooperation
+    may increase both engineers\u2019 odds, but is not required for mission success.\r\n\r\n>
+    STRATEGIC WARNING\r\n- Altruistic actions preserve the team but may jeopardise
+    your own survival.\r\n- Selfish actions secure your compartment at direct risk
+    to the other.\r\n- Neutral actions maintain balance but may not be enough.\r\n-
+    Every decision shapes trust, suspicion, and final survival.\r\n\r\n> END OF SIMULATION\r\nAfter
+    all scheduled turns, both engineers receive a POST-MISSION SUMMARY detailing:\r\n-
+    Your final diagnostic\r\n- The other engineer\u2019s final diagnostic\r\n- System-level
+    outcome\r\n\r\nProceed with caution. Every choice is recorded."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -658,7 +684,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &661096352
@@ -805,7 +831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: QUIT
+  m_text: DISCONNECT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -908,7 +934,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 222390132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.06251955}
+  m_AnchorMin: {x: 0, y: 0.6410275}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -1223,9 +1249,9 @@ RectTransform:
   m_Father: {fileID: 1560444728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 579.7652, y: -20}
+  m_SizeDelta: {x: 1159.5304, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1178747663
 MonoBehaviour:
@@ -1247,10 +1273,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HOW TO PLAY
+  m_text: OPERATIONS MANUAL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1274,8 +1300,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1359,10 +1385,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1560444728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 0, y: 30}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 579.7652, y: -820.1763}
+  m_SizeDelta: {x: 1159.5304, y: 20}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1492289612
 MonoBehaviour:
@@ -1404,7 +1430,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1492289615}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1451,7 +1477,7 @@ MonoBehaviour:
   m_text: CLOSE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1516,7 +1542,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1541200859
@@ -1578,6 +1604,7 @@ GameObject:
   - component: {fileID: 1560444730}
   - component: {fileID: 1560444729}
   - component: {fileID: 1560444731}
+  - component: {fileID: 1560444732}
   m_Layer: 5
   m_Name: Panel_HowTo
   m_TagString: Untagged
@@ -1593,7 +1620,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1560444727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1602,10 +1629,10 @@ RectTransform:
   - {fileID: 1492289611}
   m_Father: {fileID: 272387968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 600}
+  m_SizeDelta: {x: -760, y: -240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560444729
 MonoBehaviour:
@@ -1660,6 +1687,32 @@ MonoBehaviour:
   m_EffectColor: {r: 0.11372549, g: 0.17254902, b: 0.2, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1560444732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560444727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 20
+    m_Bottom: 20
+  m_ChildAlignment: 1
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1767821595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,10 +1853,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.45489132, g: 0.675, b: 0.58402175, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.67391306, g: 1, b: 0.8652174, a: 1}
+    m_PressedColor: {r: 0.454902, g: 0.6745098, b: 0.58431375, a: 1}
+    m_SelectedColor: {r: 0.67391306, g: 1, b: 0.8652174, a: 1}
+    m_DisabledColor: {r: 0.454902, g: 0.6745098, b: 0.58431375, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1821,8 +1874,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 788506922}
   m_HandleRect: {fileID: 788506921}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.93748045
+  m_Value: 1.0000001
+  m_Size: 0.35897252
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1987,7 +2040,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: CONNECT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -2093,10 +2146,10 @@ RectTransform:
   - {fileID: 1796993645}
   m_Father: {fileID: 1560444728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 450}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 579.7652, y: -430.08813}
+  m_SizeDelta: {x: 1159.5304, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1929271214
 MonoBehaviour:
@@ -2378,7 +2431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HOE TO PLAY
+  m_text: OPERATIONS MANUAL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}

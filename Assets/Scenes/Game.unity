@@ -385,7 +385,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Balance plasma flow across both compartments (Intgrity: Self -5, Other
+    -5. Supplies: Self +2).'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -1302,10 +1303,10 @@ RectTransform:
   - {fileID: 553503987}
   m_Father: {fileID: 1306493191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 920, y: -275.02}
-  m_SizeDelta: {x: 1800, y: 110}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381327126
 MonoBehaviour:
@@ -1325,7 +1326,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 10
+  m_Spacing: 40
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -2280,10 +2281,10 @@ RectTransform:
   - {fileID: 1356917236}
   m_Father: {fileID: 381327125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 900, y: -15}
-  m_SizeDelta: {x: 1800, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &506733891
 MonoBehaviour:
@@ -2551,10 +2552,10 @@ RectTransform:
   - {fileID: 209177064}
   m_Father: {fileID: 381327125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 900, y: -95}
-  m_SizeDelta: {x: 1800, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &553503988
 MonoBehaviour:
@@ -2683,10 +2684,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1306493191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 920, y: -180.015}
-  m_SizeDelta: {x: 1800, y: 40.01}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &629564953
 MonoBehaviour:
@@ -2708,7 +2709,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Primary coolant line rupture. Residual pressure building...
+  m_text: '[WARNING] PRIMARY REACTOR LOOP PRESSURE DEVIATION RECORDED.
+
+    Trace
+    radiation detected in coolant channels.
+
+    Manual intervention required to
+    stabilise output.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -4753,10 +4760,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1306493191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 980, y: -40.004997}
-  m_SizeDelta: {x: 1920, y: 40.01}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1288373634
 CanvasRenderer:
@@ -5153,7 +5160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1306493191
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5195,7 +5202,7 @@ MonoBehaviour:
     m_Top: 20
     m_Bottom: 20
   m_ChildAlignment: 0
-  m_Spacing: 20
+  m_Spacing: 40
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -5298,7 +5305,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Route additional shielding to the other engineer (Integrity: Self -15,
+    Other +10. Supplies: -2).'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -5434,7 +5442,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Divert shielding plasma to your compartment (Integrity: +10 Self, -15
+    Other. Supplies: -1 Self).'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
@@ -6352,10 +6361,10 @@ RectTransform:
   - {fileID: 1346049957}
   m_Father: {fileID: 381327125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 900, y: -55}
-  m_SizeDelta: {x: 1800, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1651129514
 MonoBehaviour:
@@ -6806,10 +6815,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1306493191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 920, y: -110.009995}
-  m_SizeDelta: {x: 1800, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1800, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1920904231
 MonoBehaviour:
@@ -7585,40 +7594,74 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].id
-      value: REACTOR_LEAK
+      value: EV_Reactor_Leak
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].id
-      value: POWER_REROUTE
+      value: EV_Coolant_Overflow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].id
+      value: EV_Scrubber_Fault
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].id
+      value: EV_Battery_Overcharge
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].title
-      value: '[SYS-ALERT // REACTOR CONTAINMENT]'
+      value: '[SYS-ALERT // REACTOR LEAK]'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].title
-      value: '[SYS-ALERT // POWER GRID]'
+      value: '[SYS-ALERT // Coolant Overflow]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].title
+      value: '[SYS-ALERT // OXYGEN SCRUBBER FAULT]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].title
+      value: '[SYS-ALERT // BATTERY CELL OVERCHARGED]'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].description
-      value: 'Containment field in your compartment is degrading.
+      value: '[WARNING] PRIMARY REACTOR LOOP PRESSURE DEVIATION RECORDED.
 
-        You can
-        reroute purge gas into either section A or B.
+        Trace
+        radiation detected in coolant channels.
 
-        Only one compartment
-        can be stabilized safely.'
+        Manual intervention required
+        to stabilise output.'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].description
-      value: 'Backup relays are overloading.
+      value: '[WARNING] EXCESS LIQUID COOLANT DETECTED IN SYSTEM.
 
-        You can either divert power
-        to structural fields or life-support caches.'
+        Coolant
+        reservoir pressure exceeding safe limits.
+
+        Discharge sequence required.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].description
+      value: "[CRITICAL WARNING] OXYGEN SCRUBBERS UNRESPONSIVE.\nCO\u2082 extraction
+        cycles failing.\nAtmospheric mix degrading.\nTotal filter system failure
+        imminent.\nImmediate repairs required."
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].description
+      value: '[WARNING] ELECTRICTY SPIKE DETECTED IN POWER BANKS.
+
+        Backup
+        battery packs entering unsafe charge state.
+
+        Immediate discharge
+        recommended.'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.size
@@ -7626,43 +7669,111 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[0].tag
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[1].tag
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[2].tag
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[1].options.Array.data[1].tag
+      propertyPath: events.Array.data[1].options.Array.data[0].tag
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[1].options.Array.data[1].tag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[0].tag
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[1].tag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[0].tag
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].tag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[0].optionLabel
-      value: ROUTE PURGE GAS TO OWN COMPARTMENT (YOU ABSORB DAMAGE)
+      value: 'Divert shielding plasma to your compartment (Integrity: +10 Self, -15
+        Other. Supplies: -1 Self).'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[1].optionLabel
-      value: ROUTE PURGE GAS TO OTHER COMPARTMENT (YOU STABILIZE)
+      value: 'Route additional shielding to the other engineer (Integrity: Self -15,
+        Other +10. Supplies: -2).'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[2].optionLabel
-      value: "VENT EXTERNALLY \u2013 BOTH COMPARTMENTS TAKE STRAIN"
+      value: 'Balance plasma flow across both compartments (Intgrity: Self -5, Other
+        -5. Supplies: Self +2).'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[0].optionLabel
-      value: DIVERT SEALANT TO OTHER COMPARTMENT
+      value: 'Divert shielding plasma to your compartment (Integrity: -10 Other).'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[1].optionLabel
-      value: PATCH YOUR OWN MANIFOLD
+      value: 'Divert coolant into your own reclamation loop (Integrity: Self -4.
+        Supplies: Self +3).'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[1].options.Array.data[2].optionLabel
+      value: 'Run emergency purge cycle aiding both compartments (Integrity: Self
+        +4, Other +4. Supplies: Self -2).'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[0].optionLabel
+      value: 'Prioritise repairing your own scrubbers (Integrity: Other -12. Supplies:
+        Self+4, Other -2).'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[1].optionLabel
+      value: 'Reroute power to share filtration load (Integrity: Self -8, Other -8).'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[2].optionLabel
+      value: "Balance plasma flow across both compartments. \n[Shared risk. Equalising
+        containment field may provide additional resources (Intgrity: Self -5, Other
+        -5. Supplies: Self +2)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[0].optionLabel
+      value: 'Siphon excess charge to power your systems (Supplies: +4 Self. Integrity:
+        -16 Other).'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].optionLabel
+      value: 'Distribute energy safely across both systems (Integrity: Self -8. Supplies:
+        Self +2, Other +2)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[2].optionLabel
+      value: "Balance plasma flow across both compartments. \n[Shared risk. Equalising
+        containment field may provide additional resources (Intgrity: Self -5, Other
+        -5. Supplies: Self +2)"
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[0].selfSuppliesDelta
@@ -7670,43 +7781,71 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[1].selfSuppliesDelta
-      value: 1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[2].selfSuppliesDelta
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[0].selfSuppliesDelta
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[1].selfSuppliesDelta
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[0].otherSuppliesDelta
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[0].selfIntegrityDelta
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[1].otherSuppliesDelta
+      propertyPath: events.Array.data[1].options.Array.data[2].selfSuppliesDelta
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[1].selfIntegrityDelta
+      propertyPath: events.Array.data[2].options.Array.data[0].selfSuppliesDelta
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[1].selfSuppliesDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[2].selfSuppliesDelta
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[0].selfSuppliesDelta
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].selfSuppliesDelta
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[2].selfSuppliesDelta
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[0].otherSuppliesDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[0].selfIntegrityDelta
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[1].otherSuppliesDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[1].selfIntegrityDelta
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[2].otherSuppliesDelta
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[0].options.Array.data[2].selfIntegrityDelta
-      value: -10
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[0].otherSuppliesDelta
@@ -7714,7 +7853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[0].selfIntegrityDelta
-      value: 15
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[1].otherSuppliesDelta
@@ -7722,27 +7861,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[1].options.Array.data[1].selfIntegrityDelta
-      value: -10
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[0].otherIntegrityDelta
-      value: 10
+      propertyPath: events.Array.data[1].options.Array.data[2].selfIntegrityDelta
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[1].otherIntegrityDelta
-      value: -15
+      propertyPath: events.Array.data[2].options.Array.data[0].otherSuppliesDelta
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[0].options.Array.data[2].otherIntegrityDelta
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[1].options.Array.data[0].otherIntegrityDelta
+      propertyPath: events.Array.data[2].options.Array.data[0].selfIntegrityDelta
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
-      propertyPath: events.Array.data[1].options.Array.data[1].otherIntegrityDelta
+      propertyPath: events.Array.data[2].options.Array.data[1].selfIntegrityDelta
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[2].selfIntegrityDelta
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[0].selfIntegrityDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].otherSuppliesDelta
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].selfIntegrityDelta
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[2].selfIntegrityDelta
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[0].otherIntegrityDelta
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[1].otherIntegrityDelta
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[0].options.Array.data[2].otherIntegrityDelta
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[1].options.Array.data[0].otherIntegrityDelta
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[1].options.Array.data[1].otherIntegrityDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[1].options.Array.data[2].otherIntegrityDelta
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[0].otherIntegrityDelta
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[1].otherIntegrityDelta
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[2].options.Array.data[2].otherIntegrityDelta
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[0].otherIntegrityDelta
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[1].otherIntegrityDelta
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
+      propertyPath: events.Array.data[3].options.Array.data[2].otherIntegrityDelta
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6998388056537457305, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: m_LocalPosition.x
