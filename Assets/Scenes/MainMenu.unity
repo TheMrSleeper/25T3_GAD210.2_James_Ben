@@ -178,8 +178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: DAMAGE CONTROL // MAIN TERMINAL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -592,7 +592,7 @@ MonoBehaviour:
     (Unity Build):\r\n\u2022 One player hosts; the other discovers & joins via LAN.\r\n\u2022
     Messages and events are synchronized between clients."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -658,7 +658,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &661096352
@@ -807,8 +807,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: QUIT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1450,7 +1450,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: CLOSE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1516,7 +1516,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1541200859
@@ -1989,8 +1989,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2380,8 +2380,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: HOE TO PLAY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
-  m_sharedMaterial: {fileID: -7569890185468706128, guid: 722952957acc2a742b38abb7ebad8161, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
+  m_sharedMaterial: {fileID: 4044154855241466135, guid: 0650b488905590d4a9e2b6a2b21ee38e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

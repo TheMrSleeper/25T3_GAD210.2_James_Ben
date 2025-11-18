@@ -1,105 +1,195 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using Unity.Netcode;
-using UnityEngine.SceneManagement;
 
 public class GameUIController : MonoBehaviour
 {
-    [Header("UI References")]
-    [SerializeField] private TextMeshProUGUI turnStatusText;
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private Button endTurnButton;
-    [SerializeField] private Button quitButton;
+    public static GameUIController Instance { get; private set; }
 
-    private ulong localClientId;
+    [Header("Top HUD - You")]
+    [SerializeField] private TextMeshProUGUI textYouIntegrity;
+    [SerializeField] private TextMeshProUGUI textYouSupplies;
 
-    private void Start()
+    [Header("Top HUD - Survival")]
+    [SerializeField] private TextMeshProUGUI textSurvivalValue;
+
+    [Header("Top HUD - Other Crew Estimate")]
+    [SerializeField] private TextMeshProUGUI textOtherIntegrity;
+    [SerializeField] private TextMeshProUGUI textOtherSupplies;
+
+    [Header("Center Panels")]
+    [SerializeField] private GameObject panelEvent;
+    [SerializeField] private GameObject panelWaiting;
+    [SerializeField] private GameObject panelMessage;
+    [SerializeField] private GameObject panelWaitForPlayers;
+
+    [Header("Event UI")]
+    [SerializeField] private TextMeshProUGUI textEventTitle;
+    [SerializeField] private TextMeshProUGUI textEventDescription;
+    [SerializeField] private TextMeshProUGUI textLastMessageFromOther;
+    [SerializeField] private TextMeshProUGUI textOption1;
+    [SerializeField] private TextMeshProUGUI textOption2;
+    [SerializeField] private TextMeshProUGUI textOption3;
+
+    [Header("Message UI")]
+    [SerializeField] private TMP_InputField inputMessage;
+    [SerializeField] private TextMeshProUGUI textMessageRemoteStatus;
+    [SerializeField] private GameObject panelMessageLocal;
+    [SerializeField] private GameObject panelMessageRemote;
+
+    private string _lastMessageFromOther = "";
+
+    private void Awake()
     {
-        if (NetworkManager.Singleton == null)
+        if (Instance != null && Instance != this)
         {
-            Debug.LogError("No NetworkManager in Game scene.");
+            Destroy(gameObject);
             return;
         }
-
-        localClientId = NetworkManager.Singleton.LocalClientId;
-
-        if (endTurnButton != null)
-            endTurnButton.onClick.AddListener(OnEndTurnClicked);
-
-        if (quitButton != null)
-            quitButton.onClick.AddListener(OnQuitClicked);
+        Instance = this;
     }
 
-    private void Update()
+    #region HUD Updates
+
+    public void UpdateLocalStats(int integrityPercent, int supplies, string survivalText)
     {
-        if (TurnManager.Instance == null || NetworkManager.Singleton == null)
-            return;
+        if (textYouIntegrity != null)
+            textYouIntegrity.text = $"INTEGRITY: {integrityPercent}%";
 
-        int currentTurn = TurnManager.Instance.GetCurrentTurn();
+        if (textYouSupplies != null)
+            textYouSupplies.text = $"SUPPLIES: {supplies}";
 
-        // For now: host is "player index 0", first client is "player index 1"
-        int myIndex = NetworkManager.Singleton.IsServer ? 0 : 1;
+        if (textSurvivalValue != null)
+            textSurvivalValue.text = survivalText.ToUpperInvariant();
+    }
 
-        bool myTurn = (currentTurn == myIndex);
+    public void UpdateOtherEstimate(string integrityEstimate, string suppliesEstimate)
+    {
+        if (textOtherIntegrity != null)
+            textOtherIntegrity.text = $"INTEGRITY: {integrityEstimate.ToUpperInvariant()}";
 
-        if (turnStatusText != null)
+        if (textOtherSupplies != null)
+            textOtherSupplies.text = $"SUPPLIES: {suppliesEstimate.ToUpperInvariant()}";
+    }
+
+    #endregion
+
+    #region Center Panel Modes
+
+    public void ShowEventPanel()
+    {
+        if (panelEvent != null) panelEvent.SetActive(true);
+        if (panelWaiting != null) panelWaiting.SetActive(false);
+        if (panelMessage != null) panelMessage.SetActive(false);
+        if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+
+        // Make sure the last-transmission label is always in sync
+        UpdateLastMessageLabel();
+    }
+
+    public void ShowWaitingPanel()
+    {
+        ShowWaitingForTurnPanel();
+    }
+
+    public void ShowMessagePanel(bool isLocalActive)
+    {
+        if (panelEvent != null) panelEvent.SetActive(false);
+        if (panelWaiting != null) panelWaiting.SetActive(false);
+        if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+        if (panelMessage != null) panelMessage.SetActive(true);
+
+        if (panelMessageLocal != null)
+            panelMessageLocal.SetActive(isLocalActive);
+        if (panelMessageRemote != null)
+            panelMessageRemote.SetActive(!isLocalActive);
+
+        if (inputMessage != null)
         {
-            turnStatusText.text = myTurn
-                ? $"YOUR TURN (Player {myIndex + 1})"
-                : $"OTHER PLAYER'S TURN (Player {(currentTurn + 1)})";
+            inputMessage.interactable = isLocalActive;
+            inputMessage.text = "";
+            if (isLocalActive)
+                inputMessage.ActivateInputField();
         }
 
-        if (messageText != null)
+        if (!isLocalActive)
         {
-            if (myTurn)
-            {
-                messageText.text = "You may end your turn.";
-            }
-            else
-            {
-                messageText.text = $"Player {currentTurn + 1} is taking their turn...";
-            }
-        }
-
-        if (endTurnButton != null)
-        {
-            endTurnButton.interactable = myTurn;
+            SetRemoteMessageStatus("INCOMING TRANSMISSION...");
         }
     }
 
-    private void OnEndTurnClicked()
+    #endregion
+
+    #region Event Setup
+
+    public void SetEventText(string title, string description,
+                             string option1, string option2, string option3 = null)
     {
-        if (NetworkManager.Singleton == null)
-        {
-            Debug.LogWarning("No NetworkManager when trying to end turn.");
-            return;
-        }
+        if (textEventTitle != null) textEventTitle.text = title;
+        if (textEventDescription != null) textEventDescription.text = description;
 
-        if (TurnManager.Instance == null)
-        {
-            Debug.LogWarning("No TurnManager.Instance when trying to end turn.");
-            return;
-        }
+        if (textOption1 != null) textOption1.text = option1;
+        if (textOption2 != null) textOption2.text = option2;
 
-        if (!TurnManager.Instance.IsSpawned)
+        if (textOption3 != null)
         {
-            Debug.LogWarning("TurnManager is not network-spawned yet.");
-            return;
+            textOption3.transform.parent.gameObject.SetActive(!string.IsNullOrEmpty(option3));
+            textOption3.text = option3 ?? "";
         }
-
-        TurnManager.Instance.EndTurnServerRpc();
     }
 
-    private void OnQuitClicked()
-    {
-        // Disconnect from network
-        if (NetworkManager.Singleton != null)
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
+    #endregion
 
-        // Back to main menu
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    #region Remote Message Display
+
+    public void SetRemoteMessageStatus(string status)
+    {
+        if (textMessageRemoteStatus != null)
+            textMessageRemoteStatus.text = status;
     }
+
+    public void ShowWaitForPlayersPanel()
+    {
+        if (panelEvent != null) panelEvent.SetActive(false);
+        if (panelWaiting != null) panelWaiting.SetActive(false);
+        if (panelMessage != null) panelMessage.SetActive(false);
+        if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(true);
+    }
+
+    public void ShowWaitingForTurnPanel()
+    {
+        if (panelEvent != null) panelEvent.SetActive(false);
+        if (panelMessage != null) panelMessage.SetActive(false);
+        if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+        if (panelWaiting != null) panelWaiting.SetActive(true);
+    }
+
+    #endregion
+
+    public void RecordLastMessageFromOther(string message)
+    {
+        _lastMessageFromOther = message ?? "";
+        UpdateLastMessageLabel();
+    }
+
+    public void ClearLastMessageFromOther()
+    {
+        _lastMessageFromOther = "";
+        UpdateLastMessageLabel();
+    }
+
+    private void UpdateLastMessageLabel()
+    {
+        if (textLastMessageFromOther == null) return;
+
+        if (string.IsNullOrWhiteSpace(_lastMessageFromOther))
+        {
+            textLastMessageFromOther.text = "LAST TRANSMISSION: [NONE]";
+        }
+        else
+        {
+            textLastMessageFromOther.text = $"LAST TRANSMISSION: \"{_lastMessageFromOther}\"";
+        }
+    }
+
+    public TMP_InputField GetMessageInputField() => inputMessage;
 }

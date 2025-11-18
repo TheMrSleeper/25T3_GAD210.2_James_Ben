@@ -16,6 +16,9 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] private TMP_InputField ipInputField;
     [SerializeField] private GameObject defaultSelectedButton; // e.g., Btn_Host
 
+    [Header("Networking")]
+    [SerializeField] private GameObject networkManagerPrefab;
+
     // Simple local model for discovered servers
     private class DiscoveredServer
     {
@@ -28,15 +31,32 @@ public class LobbyUIController : MonoBehaviour
 
     private void Start()
     {
-        // Set initial selection for keyboard / controller
+        EnsureNetworkManager();
+
         if (defaultSelectedButton != null)
         {
             EventSystem.current?.SetSelectedGameObject(defaultSelectedButton);
         }
 
-        // For now, add some dummy test data (remove this once LAN discovery is wired)
-        AddDummyServers();
+        // For testing server list UI only:
+        //AddDummyServers();
     }
+
+    private void EnsureNetworkManager()
+    {
+        if (NetworkManager.Singleton != null)
+            return;
+
+        if (networkManagerPrefab == null)
+        {
+            Debug.LogError("[LOBBY] NetworkManager prefab is not assigned!");
+            return;
+        }
+
+        var nm = Instantiate(networkManagerPrefab);
+        nm.name = "NetworkManagerRoot";
+    }
+
 
     private void AddDummyServers()
     {
@@ -86,71 +106,66 @@ public class LobbyUIController : MonoBehaviour
     {
         Debug.Log("[LOBBY] Host button clicked.");
 
-        var networkManager = NetworkManager.Singleton;
-        if (networkManager == null)
+        // Configure host transport; for LAN this can be 0.0.0.0 so others can connect.
+        var bootstrap = FindObjectOfType<NetworkBootstrap>();
+        if (bootstrap == null)
         {
-            Debug.LogError("No NetworkManager.Singleton found. Ensure NetworkBootstrap is in the scene.");
+            Debug.LogError("[LOBBY] No NetworkBootstrap found!");
             return;
         }
 
-        var transport = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
-        if (transport != null)
+        // Start host
+        if (!NetworkManager.Singleton.IsListening)
         {
-            transport.SetConnectionData("0.0.0.0", 7777);
+            NetworkManager.Singleton.StartHost();
         }
 
-        if (!networkManager.StartHost())
-        {
-            Debug.LogError("Failed to start host.");
-            return;
-        }
-
-        // IMPORTANT: use NGO's SceneManager, NOT UnityEngine.SceneManagement directly
-        networkManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        // Sync-load the Game scene so clients follow
+        var sceneName = "Game";
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
+
 
     // Button: JOIN BY IP
     public void OnJoinByIpClicked()
     {
-        var networkManager = NetworkManager.Singleton;
-        if (networkManager == null)
+        var ip = ipInputField != null ? ipInputField.text : "";
+        if (string.IsNullOrWhiteSpace(ip))
         {
-            Debug.LogError("No NetworkManager.Singleton found. Ensure NetworkBootstrap is in the scene.");
+            Debug.LogWarning("[LOBBY] No IP provided.");
             return;
         }
-
-        var ip = ipInputField != null ? ipInputField.text : "127.0.0.1";
-        if (string.IsNullOrWhiteSpace(ip)) ip = "127.0.0.1";
 
         Debug.Log($"[LOBBY] Join by IP clicked: {ip}");
 
-        var transport = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
-        if (transport != null)
+        var bootstrap = FindObjectOfType<NetworkBootstrap>();
+        if (bootstrap == null)
         {
-            transport.SetConnectionData(ip, 7777);
-        }
-
-        if (!networkManager.StartClient())
-        {
-            Debug.LogError("Failed to start client.");
+            Debug.LogError("[LOBBY] No NetworkBootstrap found!");
             return;
         }
 
-        // DO *NOT* load Game here.
-        // Client will automatically follow the host's SceneManager.LoadScene("Game", ...)
+        // For LAN, we assume same port as host
+        bootstrap.ConfigureClient(ip, 7777);
+
+        if (!NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.StartClient();
+        }
+        else if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost)
+        {
+            NetworkManager.Singleton.StartClient();
+        }
+
+        // Client will auto-follow when host switches scenes, so we do NOT manually load Game here.
+        // The host's NetworkSceneManager.LoadScene call will propagate to all clients.
     }
+
 
     // Button: BACK
     public void OnBackClicked()
     {
         Debug.Log("[LOBBY] Back to main menu.");
-
-        // Shut down network if returning to main
-        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
-
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }
