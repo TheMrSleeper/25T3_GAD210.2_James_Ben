@@ -1,5 +1,7 @@
-using UnityEngine;
 using TMPro;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUIController : MonoBehaviour
 {
@@ -16,11 +18,15 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textOtherIntegrity;
     [SerializeField] private TextMeshProUGUI textOtherSupplies;
 
+    [Header("Bottom HUD")]
+    [SerializeField] private GameObject panelBottomBar;
+    [SerializeField] private GameObject buttonReturnToMenu;
+    [SerializeField] private GameObject buttonPlayAgain;
+
     [Header("Center Panels")]
     [SerializeField] private GameObject panelEvent;
     [SerializeField] private GameObject panelWaiting;
     [SerializeField] private GameObject panelMessage;
-    [SerializeField] private GameObject panelWaitForPlayers;
 
     [Header("Event UI")]
     [SerializeField] private TextMeshProUGUI textEventTitle;
@@ -35,6 +41,18 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMessageRemoteStatus;
     [SerializeField] private GameObject panelMessageLocal;
     [SerializeField] private GameObject panelMessageRemote;
+
+    [Header("Wait For Players UI")]
+    [SerializeField] private GameObject panelWaitForPlayers;
+    [SerializeField] private TextMeshProUGUI textConnectedStatus;
+    [SerializeField] private TextMeshProUGUI textHostIpHint;
+
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private TextMeshProUGUI textGameOverTitle;
+    [SerializeField] private TextMeshProUGUI textGameOverLocal;
+    [SerializeField] private TextMeshProUGUI textGameOverOther;
+    [SerializeField] private TextMeshProUGUI textGameOverOverall;
 
     private string _lastMessageFromOther = "";
 
@@ -71,6 +89,29 @@ public class GameUIController : MonoBehaviour
             textOtherSupplies.text = $"SUPPLIES: {suppliesEstimate.ToUpperInvariant()}";
     }
 
+    public void SetBottomBarDefaultMode()
+    {
+        if (panelBottomBar != null)
+            panelBottomBar.SetActive(true);
+
+        if (buttonReturnToMenu != null)
+            buttonReturnToMenu.SetActive(true);
+
+        if (buttonPlayAgain != null)
+            buttonPlayAgain.SetActive(false);
+    }
+
+    public void SetBottomBarGameOverMode()
+    {
+        if (panelBottomBar != null)
+            panelBottomBar.SetActive(true);
+
+        if (buttonReturnToMenu != null)
+            buttonReturnToMenu.SetActive(true);
+
+        if (buttonPlayAgain != null)
+            buttonPlayAgain.SetActive(true);
+    }
     #endregion
 
     #region Center Panel Modes
@@ -188,6 +229,88 @@ public class GameUIController : MonoBehaviour
         else
         {
             textLastMessageFromOther.text = $"LAST TRANSMISSION: \"{_lastMessageFromOther}\"";
+        }
+    }
+
+    public void UpdateConnectionStatus(int connected, int total, string hostIp)
+    {
+        if (textConnectedStatus != null)
+        {
+            textConnectedStatus.text = $"CONNECTED ENGINEERS: {connected} / {total}";
+        }
+
+        if (textHostIpHint != null)
+        {
+            if (string.IsNullOrWhiteSpace(hostIp))
+            {
+                textHostIpHint.text = "HOST IP: [DETECTING...]";
+            }
+            else
+            {
+                textHostIpHint.text = $"HOST IP: {hostIp}";
+            }
+        }
+    }
+
+    public void ShowGameOver(string localSummary, string otherSummary, string overallSummary)
+    {
+        // Hide the other panels
+        if (panelEvent != null) panelEvent.SetActive(false);
+        if (panelWaiting != null) panelWaiting.SetActive(false);
+        if (panelMessage != null) panelMessage.SetActive(false);
+        if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+
+        if (panelGameOver != null) panelGameOver.SetActive(true);
+
+        if (textGameOverTitle != null)
+            textGameOverTitle.text = "== [POST-MISSION SUMMARY] ==";
+
+        if (textGameOverLocal != null)
+            textGameOverLocal.text = localSummary;
+
+        if (textGameOverOther != null)
+            textGameOverOther.text = otherSummary;
+
+        if (textGameOverOverall != null)
+            textGameOverOverall.text = overallSummary;
+    }
+
+    // Called by the Return to Main Menu button
+    public void OnReturnToMenuClicked()
+    {
+        // Stop networking if active
+        if (NetworkManager.Singleton != null)
+        {
+            if (NetworkManager.Singleton.IsHost)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+            else if (NetworkManager.Singleton.IsClient)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+        }
+
+        // Load main menu locally
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    // Called by the Play Again button (only host actually triggers a new round)
+    public void OnPlayAgainClicked()
+    {
+        if (NetworkManager.Singleton == null)
+            return;
+
+        if (NetworkManager.Singleton.IsHost)
+        {
+            // Host reloads the Game scene via Netcode scene manager,
+            // which pulls all connected clients along.
+            NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        }
+        else
+        {
+            // Add status messsage later
+            Debug.Log("[UI] Play Again clicked on client. Waiting for host to restart round.");
         }
     }
 

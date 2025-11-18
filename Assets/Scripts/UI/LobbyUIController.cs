@@ -19,6 +19,9 @@ public class LobbyUIController : MonoBehaviour
     [Header("Networking")]
     [SerializeField] private GameObject networkManagerPrefab;
 
+    [Header("Status UI")]
+    [SerializeField] private TextMeshProUGUI textConnectionStatus;
+
     // Simple local model for discovered servers
     private class DiscoveredServer
     {
@@ -71,6 +74,14 @@ public class LobbyUIController : MonoBehaviour
             Destroy(child.gameObject);
         }
         _servers.Clear();
+    }
+
+    public void SetStatus(string message)
+    {
+        if (textConnectionStatus != null)
+        {
+            textConnectionStatus.text = $"STATUS: {message}";
+        }
     }
 
     // This will be called later by your Network Discovery script
@@ -133,32 +144,68 @@ public class LobbyUIController : MonoBehaviour
         if (string.IsNullOrWhiteSpace(ip))
         {
             Debug.LogWarning("[LOBBY] No IP provided.");
+            SetStatus("NO IP PROVIDED");
             return;
         }
 
         Debug.Log($"[LOBBY] Join by IP clicked: {ip}");
+        SetStatus($"CONNECTING TO {ip}:7777 ...");
 
         var bootstrap = FindObjectOfType<NetworkBootstrap>();
         if (bootstrap == null)
         {
             Debug.LogError("[LOBBY] No NetworkBootstrap found!");
+            SetStatus("ERROR: NO NETWORK BOOTSTRAP");
             return;
         }
 
-        // For LAN, we assume same port as host
+        // Configure client address/port
         bootstrap.ConfigureClient(ip, 7777);
 
-        if (!NetworkManager.Singleton.IsListening)
+        if (NetworkManager.Singleton == null)
         {
-            NetworkManager.Singleton.StartClient();
-        }
-        else if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost)
-        {
-            NetworkManager.Singleton.StartClient();
+            Debug.LogError("[LOBBY] No NetworkManager.Singleton present.");
+            SetStatus("ERROR: NO NETWORK MANAGER");
+            return;
         }
 
-        // Client will auto-follow when host switches scenes, so we do NOT manually load Game here.
-        // The host's NetworkSceneManager.LoadScene call will propagate to all clients.
+        // Try to start client
+        bool started = NetworkManager.Singleton.StartClient();
+        if (!started)
+        {
+            Debug.LogError("[LOBBY] StartClient() failed immediately.");
+            SetStatus("FAILED TO START CLIENT");
+            return;
+        }
+
+        // Subscribe to connection callbacks (client-side)
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+
+        // We don't manually load Game here; host's NetworkSceneManager.LoadScene will pull us in.
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        if (!NetworkManager.Singleton.IsClient) return;
+
+        // This callback fires on both host & clients. Only care when it's OUR local client.
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.Log($"[LOBBY] Connected to host as client {clientId}.");
+            SetStatus("CONNECTED. WAITING FOR HOST SCENE SYNC...");
+        }
+    }
+
+    private void OnClientDisconnected(ulong clientId)
+    {
+        if (!NetworkManager.Singleton.IsClient) return;
+
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.LogWarning("[LOBBY] Disconnected from host or failed to connect.");
+            SetStatus("DISCONNECTED OR FAILED TO CONNECT");
+        }
     }
 
 

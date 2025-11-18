@@ -1,5 +1,6 @@
-using UnityEngine;
+using Unity.Collections;
 using Unity.Netcode;
+using UnityEngine;
 
 public class GameClientController : MonoBehaviour
 {
@@ -36,12 +37,15 @@ public class GameClientController : MonoBehaviour
         gm.ActivePlayerClientId.OnValueChanged += OnActivePlayerChanged;
         gm.CurrentPhase.OnValueChanged += OnPhaseChanged;
         gm.CurrentEventIndex.OnValueChanged += OnEventChanged;
+        gm.ConnectedPlayersCount.OnValueChanged += OnConnectedPlayersChanged;
+        gm.HostIpHint.OnValueChanged += OnHostIpChanged;
 
         _subscribed = true;
 
         // Initial UI setup
         RefreshUI();
         RefreshEventText();
+        RefreshConnectionStatus();
     }
 
     private void OnDestroy()
@@ -52,6 +56,8 @@ public class GameClientController : MonoBehaviour
             gm.ActivePlayerClientId.OnValueChanged -= OnActivePlayerChanged;
             gm.CurrentPhase.OnValueChanged -= OnPhaseChanged;
             gm.CurrentEventIndex.OnValueChanged -= OnEventChanged;
+            gm.ConnectedPlayersCount.OnValueChanged -= OnConnectedPlayersChanged;
+            gm.HostIpHint.OnValueChanged -= OnHostIpChanged;
         }
     }
 
@@ -60,6 +66,28 @@ public class GameClientController : MonoBehaviour
     private void OnActivePlayerChanged(ulong oldValue, ulong newValue)
     {
         RefreshUI();
+    }
+
+    private void OnConnectedPlayersChanged(int oldValue, int newValue)
+    {
+        RefreshConnectionStatus();
+    }
+
+    private void OnHostIpChanged(FixedString64Bytes oldValue, FixedString64Bytes newValue)
+    {
+        RefreshConnectionStatus();
+    }
+
+    private void RefreshConnectionStatus()
+    {
+        if (GameManager.Instance == null || GameUIController.Instance == null)
+            return;
+
+        int connected = GameManager.Instance.ConnectedPlayersCount.Value;
+        string ip = GameManager.Instance.HostIpHint.Value.ToString();
+
+        // You currently support exactly 2 players
+        GameUIController.Instance.UpdateConnectionStatus(connected, 2, ip);
     }
 
     private void OnPhaseChanged(TurnPhase oldPhase, TurnPhase newPhase)
@@ -86,8 +114,8 @@ public class GameClientController : MonoBehaviour
         switch (phase)
         {
             case TurnPhase.WaitingForPlayers:
-                // Host is alone in the game, or only one player registered so far
                 GameUIController.Instance.ShowWaitForPlayersPanel();
+                GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
 
             case TurnPhase.EventResolution:
@@ -95,20 +123,24 @@ public class GameClientController : MonoBehaviour
                     GameUIController.Instance.ShowEventPanel();
                 else
                     GameUIController.Instance.ShowWaitingForTurnPanel();
+
+                GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
 
             case TurnPhase.MessageTyping:
                 GameUIController.Instance.ShowMessagePanel(isActive);
+                GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
 
             case TurnPhase.GameOver:
-                // TODO: show an end-of-game summary panel later
-                GameUIController.Instance.ShowWaitingForTurnPanel();
+                // The GameManager will already have called ShowGameOver via RPC,
+                // so here we just ensure the bottom bar is in "game over" mode.
+                GameUIController.Instance.SetBottomBarGameOverMode();
                 break;
 
             default:
-                // For any transitional states, default to "waiting for turn" to avoid weirdness
                 GameUIController.Instance.ShowWaitingForTurnPanel();
+                GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
         }
     }

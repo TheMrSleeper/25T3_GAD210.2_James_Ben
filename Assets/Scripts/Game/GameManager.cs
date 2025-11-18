@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Collections;
 
 public enum TurnPhase
 {
@@ -11,10 +12,20 @@ public enum TurnPhase
     GameOver
 }
 
+public enum EventOptionTag
+{
+    Neutral,
+    Altruistic,
+    Selfish
+}
+
 [System.Serializable]
 public class EventOption
 {
     [TextArea] public string optionLabel;
+
+    // Tag for analytics / debugging (doesn't affect logic yet)
+    public EventOptionTag tag = EventOptionTag.Neutral;
 
     // Effects on the ACTIVE player (the one making the choice)
     public int selfSuppliesDelta;
@@ -37,6 +48,13 @@ public class EventDefinition
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [Header("Connection Status")]
+    public NetworkVariable<int> ConnectedPlayersCount = new NetworkVariable<int>(
+       0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    public NetworkVariable<FixedString64Bytes> HostIpHint = new NetworkVariable<FixedString64Bytes>(
+        "", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     [Header("Events (modular, editable in Inspector)")]
     [SerializeField] private EventDefinition[] events;
@@ -72,6 +90,9 @@ public class GameManager : NetworkBehaviour
         {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+
+            // Set host IP hint once, from NetworkBootstrap
+            HostIpHint.Value = NetworkBootstrap.LocalIpAddress;
         }
     }
 
@@ -108,6 +129,8 @@ public class GameManager : NetworkBehaviour
             _turnCounts[player.OwnerClientId] = 0;
         }
 
+        ConnectedPlayersCount.Value = _players.Count;
+
         Debug.Log($"[GameManager] Registered player for client {player.OwnerClientId}. Count: {_players.Count}");
 
         if (_players.Count == 2 && CurrentPhase.Value == TurnPhase.WaitingForPlayers)
@@ -118,7 +141,6 @@ public class GameManager : NetworkBehaviour
 
     private void StartFirstTurn()
     {
-        // For simplicity, start with the host
         ulong hostId = NetworkManager.Singleton.LocalClientId;
         ActivePlayerClientId.Value = hostId;
 
@@ -126,6 +148,9 @@ public class GameManager : NetworkBehaviour
 
         SelectRandomEvent();
         CurrentPhase.Value = TurnPhase.EventResolution;
+
+        // Initial fuzzy estimate for both players
+        BroadcastOtherEstimates();
     }
 
     private void SelectRandomEvent()
@@ -182,10 +207,13 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SubmitEventOptionServerRpc(int optionIndex, ServerRpcParams rpcParams = default)
     {
+        // Only handle options in the EventResolution phase
         if (CurrentPhase.Value != TurnPhase.EventResolution)
             return;
 
         ulong senderClientId = rpcParams.Receive.SenderClientId;
+
+        // Only the active player is allowed to choose
         if (senderClientId != ActivePlayerClientId.Value)
         {
             Debug.LogWarning($"[GameManager] Client {senderClientId} tried to choose event option but is not active.");
@@ -216,20 +244,28 @@ public class GameManager : NetworkBehaviour
             return;
         }
 
-        // Apply deltas
-        self.Supplies.Value += option.selfSuppliesDelta;
+        Debug.Log($"[GameManager] Resolving event '{evt.id}', option {optionIndex} ({option.tag}).");
+
+        // --- Apply deltas to ACTIVE player ---
+        self.Supplies.Value = Mathf.Max(0, self.Supplies.Value + option.selfSuppliesDelta);
         self.Integrity.Value = Mathf.Clamp(self.Integrity.Value + option.selfIntegrityDelta, 0, 100);
 
-        other.Supplies.Value += option.otherSuppliesDelta;
+        // --- Apply deltas to OTHER player ---
+        other.Supplies.Value = Mathf.Max(0, other.Supplies.Value + option.otherSuppliesDelta);
         other.Integrity.Value = Mathf.Clamp(other.Integrity.Value + option.otherIntegrityDelta, 0, 100);
 
         // Recompute survival chances for both
         self.SurvivalChance.Value = ComputeSurvivalChance(self.Integrity.Value, self.Supplies.Value);
         other.SurvivalChance.Value = ComputeSurvivalChance(other.Integrity.Value, other.Supplies.Value);
 
-        Debug.Log($"[GameManager] Option {optionIndex} applied. Self: (Supplies {self.Supplies.Value}, Integrity {self.Integrity.Value}), Other: (Supplies {other.Supplies.Value}, Integrity {other.Integrity.Value})");
+        // Update fuzzy estimates for both clients
+        BroadcastOtherEstimates();
 
-        // Move to message typing phase
+        Debug.Log($"[GameManager] After option {optionIndex}: " +
+                  $"Self (CID {senderClientId}) -> Supplies {self.Supplies.Value}, Integrity {self.Integrity.Value}, Survival {self.SurvivalChance.Value}% | " +
+                  $"Other -> Supplies {other.Supplies.Value}, Integrity {other.Integrity.Value}, Survival {other.SurvivalChance.Value}%");
+
+        // Transition to message-typing phase
         CurrentPhase.Value = TurnPhase.MessageTyping;
     }
 
@@ -238,25 +274,124 @@ public class GameManager : NetworkBehaviour
         if (integrity <= 0)
             return 0;
 
-        // Very simple, tweakable heuristic:
-        // - High integrity + supplies => ~100%
-        // - Lower integrity => lower base, improved slightly by supplies
-        float baseChance;
-        if (integrity >= 80 && supplies >= 10)
-            return 100;
-        else if (integrity >= 60)
-            baseChance = 60f;
-        else if (integrity >= 40)
-            baseChance = 40f;
-        else if (integrity >= 20)
-            baseChance = 20f;
-        else
-            baseChance = 5f; // very low integrity
+        // Basic heuristic:
+        // - High integrity + some supplies: 100%
+        // - Mid integrity: mid-range chance, boosted by supplies
+        // - Low integrity: low base, slightly boosted by supplies
 
-        baseChance += supplies * 3f; // each supply adds ~3%
+        float baseChance;
+
+        if (integrity >= 80)
+        {
+            baseChance = 90f + supplies * 1.5f;
+        }
+        else if (integrity >= 60)
+        {
+            baseChance = 60f + supplies * 2f;
+        }
+        else if (integrity >= 40)
+        {
+            baseChance = 40f + supplies * 2.5f;
+        }
+        else if (integrity >= 20)
+        {
+            baseChance = 20f + supplies * 3f;
+        }
+        else // integrity between 1 and 19
+        {
+            baseChance = 5f + supplies * 2f;
+        }
 
         int result = Mathf.Clamp(Mathf.RoundToInt(baseChance), 0, 100);
         return result;
+    }
+
+    private bool RollFinalSurvival(int integrity, int supplies, int survivalChance)
+    {
+        // Hard rules first
+        if (integrity <= 0)
+            return false;
+
+        if (survivalChance >= 99)
+            return true;
+
+        if (survivalChance <= 0)
+            return false;
+
+        // Use SurvivalChance as a percentage
+        float roll = Random.Range(0f, 100f);
+        return roll < survivalChance;
+    }
+
+    // --- Other crew estimate logic ---
+
+    private void ComputeFuzzyEstimate(int trueValue, out string category)
+    {
+        // Base categorisation
+        // 0–30  => LOW
+        // 31–70 => MID
+        // 71–100 => HIGH
+        string baseCat;
+        if (trueValue <= 30) baseCat = "LOW";
+        else if (trueValue <= 70) baseCat = "MID";
+        else baseCat = "HIGH";
+
+        // Add some "sensor noise": 20% chance to wobble to neighbouring category
+        float roll = Random.value; // 0–1
+        if (roll < 0.2f)
+        {
+            if (baseCat == "LOW")
+            {
+                // Sometimes misread LOW as MID
+                baseCat = "MID";
+            }
+            else if (baseCat == "HIGH")
+            {
+                // Sometimes misread HIGH as MID
+                baseCat = "MID";
+            }
+            else // MID
+            {
+                // MID can wobble to LOW or HIGH
+                baseCat = (Random.value < 0.5f) ? "LOW" : "HIGH";
+            }
+        }
+
+        category = baseCat;
+    }
+
+    private void BroadcastOtherEstimates()
+    {
+        if (!IsServer || _players.Count < 2) return;
+
+        foreach (var kv in _players)
+        {
+            ulong viewerId = kv.Key;
+            var otherPlayer = GetOtherPlayer(viewerId);
+            if (otherPlayer == null) continue;
+
+            // Compute fuzzy categories based on other's real stats
+            ComputeFuzzyEstimate(otherPlayer.Integrity.Value, out string integCat);
+            ComputeFuzzyEstimate(otherPlayer.Supplies.Value, out string supCat);
+
+            var rpcParams = new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new[] { viewerId }
+                }
+            };
+
+            UpdateOtherEstimateClientRpc(integCat, supCat, rpcParams);
+        }
+    }
+
+    [ClientRpc]
+    private void UpdateOtherEstimateClientRpc(string integrityEstimate, string suppliesEstimate, ClientRpcParams clientRpcParams = default)
+    {
+        if (GameUIController.Instance == null) return;
+
+        GameUIController.Instance.UpdateOtherEstimate(integrityEstimate, suppliesEstimate);
     }
 
     // --- Messaging and turn end ---
@@ -335,8 +470,8 @@ public class GameManager : NetworkBehaviour
 
         if (allDone)
         {
-            Debug.Log("[GameManager] Max turns reached. Game over.");
-            CurrentPhase.Value = TurnPhase.GameOver;
+            Debug.Log("[GameManager] Max turns reached. Resolving final outcome...");
+            ResolveFinalOutcome();
             return;
         }
 
@@ -349,5 +484,123 @@ public class GameManager : NetworkBehaviour
 
         CurrentPhase.Value = TurnPhase.EventResolution;
         Debug.Log($"[GameManager] New turn. Active player: {nextId}");
+    }
+
+    private void ResolveFinalOutcome()
+    {
+        if (!IsServer || _players.Count < 1) return;
+
+        // 1) Compute a final survived/dead result for each client ONCE
+        var finalSurvival = new Dictionary<ulong, bool>();
+
+        foreach (var kv in _players)
+        {
+            ulong clientId = kv.Key;
+            var ps = kv.Value;
+
+            bool survived = RollFinalSurvival(
+                ps.Integrity.Value,
+                ps.Supplies.Value,
+                ps.SurvivalChance.Value
+            );
+
+            finalSurvival[clientId] = survived;
+        }
+
+        // 2) For each client, build a local vs other summary and send via ClientRpc
+        foreach (var kv in _players)
+        {
+            ulong viewerId = kv.Key;
+            var localPlayer = kv.Value;
+            var otherPlayer = GetOtherPlayer(viewerId);
+
+            bool localSurvived = finalSurvival.TryGetValue(viewerId, out var ls) && ls;
+
+            bool otherSurvived = false;
+            ulong otherId = viewerId;
+            if (otherPlayer != null)
+            {
+                otherId = otherPlayer.OwnerClientId;
+                otherSurvived = finalSurvival.TryGetValue(otherId, out var os) && os;
+            }
+
+            // Build local summary block
+            string localOutcomeText = localSurvived ? "SURVIVED" : "DECEASED";
+            string localSummary =
+                "[COMPARTMENT STATUS // YOU]\n" +
+                $"Integrity at shutdown: {localPlayer.Integrity.Value}%\n" +
+                $"Supplies remaining: {localPlayer.Supplies.Value}\n" +
+                $"Final survival diagnostic: {localPlayer.SurvivalChance.Value}%\n" +
+                $"Outcome: {localOutcomeText}";
+
+            // Build other summary block
+            string otherSummary;
+            if (otherPlayer != null)
+            {
+                string otherOutcomeText = otherSurvived ? "SURVIVED" : "DECEASED";
+                otherSummary =
+                    "[COMPARTMENT STATUS // OTHER]\n" +
+                    $"Integrity at shutdown: {otherPlayer.Integrity.Value}%\n" +
+                    $"Supplies remaining: {otherPlayer.Supplies.Value}\n" +
+                    $"Final survival diagnostic: {otherPlayer.SurvivalChance.Value}%\n" +
+                    $"Outcome: {otherOutcomeText}";
+            }
+            else
+            {
+                otherSummary =
+                    "[COMPARTMENT STATUS // OTHER]\n" +
+                    "No telemetry received.\n" +
+                    "Outcome: UNKNOWN";
+            }
+
+            // Overall system-level outcome summary
+            string overallSummary;
+            if (localSurvived && otherSurvived)
+            {
+                overallSummary =
+                    "Both compartments maintained critical thresholds.\n" +
+                    "Vessel remains marginally spaceworthy. Debriefing recommended.";
+            }
+            else if (localSurvived && !otherSurvived)
+            {
+                overallSummary =
+                    "Only your compartment remained within survivable bounds.\n" +
+                    "Systemic damage sustained. Rescue beacon deployment pending.";
+            }
+            else if (!localSurvived && otherSurvived)
+            {
+                overallSummary =
+                    "Your compartment fell below survivable thresholds.\n" +
+                    "Other engineer stabilized their section; recovery of remains uncertain.";
+            }
+            else // neither survived
+            {
+                overallSummary =
+                    "Neither compartment restored functional stability.\n" +
+                    "Vessel lost with all remaining crew. Incident logged for archive.";
+            }
+
+            var rpcParams = new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new[] { viewerId }
+                }
+            };
+
+            ShowGameOverClientRpc(localSummary, otherSummary, overallSummary, rpcParams);
+        }
+
+        // Finally, set phase to GameOver
+        CurrentPhase.Value = TurnPhase.GameOver;
+        Debug.Log("[GameManager] Final outcome resolved. GameOver.");
+    }
+
+    [ClientRpc]
+    private void ShowGameOverClientRpc(string localSummary, string otherSummary, string overallSummary, ClientRpcParams clientRpcParams = default)
+    {
+        if (GameUIController.Instance == null) return;
+
+        GameUIController.Instance.ShowGameOver(localSummary, otherSummary, overallSummary);
     }
 }
