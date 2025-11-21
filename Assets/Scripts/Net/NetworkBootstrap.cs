@@ -36,6 +36,11 @@ public class NetworkBootstrap : MonoBehaviour
         Debug.Log($"[NetworkBootstrap] Local IP detected: {LocalIpAddress}");
     }
 
+    private void Start()
+    {
+        Debug.Log("Hello");
+    }
+
     private string GetLocalIPv4()
     {
         try

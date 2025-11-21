@@ -24,7 +24,7 @@ public class EventOption
 {
     [TextArea] public string optionLabel;
 
-    // Tag for analytics / debugging (doesn't affect logic yet)
+    // Tag for analytics / debugging
     public EventOptionTag tag = EventOptionTag.Neutral;
 
     // Effects on the ACTIVE player (the one making the choice)
@@ -433,16 +433,16 @@ public class GameManager : NetworkBehaviour
 
         if (localId == senderClientId)
         {
-            // We sent the message
+            // Sent the message
             GameUIController.Instance.SetRemoteMessageStatus("TRANSMISSION SENT.");
-            // We DO NOT record this as "last message from other"
+            // DO NOT record this as "last message from other"
         }
         else
         {
             // Other engineer receives it
             GameUIController.Instance.SetRemoteMessageStatus($"MESSAGE RECEIVED: \"{message}\"");
 
-            // Store this so the next time WE get an event, we see it at the top
+            // Store this so the next event, it is seen at the top
             GameUIController.Instance.RecordLastMessageFromOther(message);
         }
     }
@@ -490,7 +490,7 @@ public class GameManager : NetworkBehaviour
     {
         if (!IsServer || _players.Count < 1) return;
 
-        // 1) Compute a final survived/dead result for each client ONCE
+        // Compute a final survived/dead result for each client ONCE
         var finalSurvival = new Dictionary<ulong, bool>();
 
         foreach (var kv in _players)
@@ -507,7 +507,7 @@ public class GameManager : NetworkBehaviour
             finalSurvival[clientId] = survived;
         }
 
-        // 2) For each client, build a local vs other summary and send via ClientRpc
+        // For each client, build a local vs other summary and send via ClientRpc
         foreach (var kv in _players)
         {
             ulong viewerId = kv.Key;
@@ -591,7 +591,7 @@ public class GameManager : NetworkBehaviour
             ShowGameOverClientRpc(localSummary, otherSummary, overallSummary, rpcParams);
         }
 
-        // Finally, set phase to GameOver
+        // Set phase to GameOver
         CurrentPhase.Value = TurnPhase.GameOver;
         Debug.Log("[GameManager] Final outcome resolved. GameOver.");
     }
