@@ -303,8 +303,8 @@ public class GameUIController : MonoBehaviour
 
         if (NetworkManager.Singleton.IsHost)
         {
-            // Host reloads the Game scene via Netcode scene manager,
-            // which pulls all connected clients along.
+            // Host reloads the Game scene via Netcode scene manager
+            // Pulls all connected clients along.
             NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
         else

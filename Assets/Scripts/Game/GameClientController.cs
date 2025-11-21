@@ -86,7 +86,7 @@ public class GameClientController : MonoBehaviour
         int connected = GameManager.Instance.ConnectedPlayersCount.Value;
         string ip = GameManager.Instance.HostIpHint.Value.ToString();
 
-        // You currently support exactly 2 players
+        // Number of supported players
         GameUIController.Instance.UpdateConnectionStatus(connected, 2, ip);
     }
 
@@ -133,8 +133,6 @@ public class GameClientController : MonoBehaviour
                 break;
 
             case TurnPhase.GameOver:
-                // The GameManager will already have called ShowGameOver via RPC,
-                // so here we just ensure the bottom bar is in "game over" mode.
                 GameUIController.Instance.SetBottomBarGameOverMode();
                 break;
 

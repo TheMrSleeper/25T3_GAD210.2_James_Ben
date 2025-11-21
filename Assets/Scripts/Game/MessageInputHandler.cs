@@ -19,10 +19,8 @@ public class MessageInputHandler : MonoBehaviour
             inputField.characterLimit = characterLimit;
             inputField.lineType = TMP_InputField.LineType.SingleLine;
 
-            // IMPORTANT: listen for Enter/Return via TMP's submit event
+            // listen for Enter/Return via TMP's submit event
             inputField.onSubmit.AddListener(OnSubmit);
-            // If onSubmit doesn't fire in your setup, you can also use:
-            // inputField.onEndEdit.AddListener(OnSubmit);
         }
     }
 
@@ -31,7 +29,6 @@ public class MessageInputHandler : MonoBehaviour
         if (inputField != null)
         {
             inputField.onSubmit.RemoveListener(OnSubmit);
-            // inputField.onEndEdit.RemoveListener(OnSubmit); // if you used it
         }
     }
 

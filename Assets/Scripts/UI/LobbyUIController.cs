@@ -9,12 +9,12 @@ using Unity.Netcode.Transports.UTP;
 public class LobbyUIController : MonoBehaviour
 {
     [Header("Server List")]
-    [SerializeField] private Transform serverListContainer;   // Content_ServerList
-    [SerializeField] private GameObject serverListItemPrefab; // Prefab/ServerListItem
+    [SerializeField] private Transform serverListContainer;
+    [SerializeField] private GameObject serverListItemPrefab;
 
     [Header("Bottom Bar")]
     [SerializeField] private TMP_InputField ipInputField;
-    [SerializeField] private GameObject defaultSelectedButton; // e.g., Btn_Host
+    [SerializeField] private GameObject defaultSelectedButton;
 
     [Header("Networking")]
     [SerializeField] private GameObject networkManagerPrefab;
@@ -23,14 +23,14 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textConnectionStatus;
 
     // Simple local model for discovered servers
-    private class DiscoveredServer
-    {
-        public string DisplayName;
-        public string IpAddress;
-        public int Port;
-    }
+    //private class DiscoveredServer
+    //{
+    //    public string DisplayName;
+    //    public string IpAddress;
+    //    public int Port;
+    //}
 
-    private readonly List<DiscoveredServer> _servers = new();
+    //private readonly List<DiscoveredServer> _servers = new();
 
     private void Start()
     {
@@ -61,20 +61,20 @@ public class LobbyUIController : MonoBehaviour
     }
 
 
-    private void AddDummyServers()
-    {
-        OnServerDiscovered("ENGINEERING_A", "192.168.0.10", 7777);
-        OnServerDiscovered("ENGINEERING_B", "192.168.0.11", 7777);
-    }
+    //private void AddDummyServers()
+    //{
+    //    OnServerDiscovered("ENGINEERING_A", "192.168.0.10", 7777);
+    //    OnServerDiscovered("ENGINEERING_B", "192.168.0.11", 7777);
+    //}
 
-    public void ClearServerList()
-    {
-        foreach (Transform child in serverListContainer)
-        {
-            Destroy(child.gameObject);
-        }
-        _servers.Clear();
-    }
+    //public void ClearServerList()
+    //{
+    //    foreach (Transform child in serverListContainer)
+    //    {
+    //        Destroy(child.gameObject);
+    //    }
+    //    _servers.Clear();
+    //}
 
     public void SetStatus(string message)
     {
@@ -84,40 +84,38 @@ public class LobbyUIController : MonoBehaviour
         }
     }
 
-    // This will be called later by your Network Discovery script
-    public void OnServerDiscovered(string displayName, string ip, int port)
-    {
-        var server = new DiscoveredServer
-        {
-            DisplayName = displayName,
-            IpAddress = ip,
-            Port = port
-        };
-        _servers.Add(server);
+    // Deprecated; No longer using Network Discovery
+    //public void OnServerDiscovered(string displayName, string ip, int port)
+    //{
+    //    var server = new DiscoveredServer
+    //    {
+    //        DisplayName = displayName,
+    //        IpAddress = ip,
+    //        Port = port
+    //    };
+    //    _servers.Add(server);
 
-        // Create UI entry
-        var itemGO = Instantiate(serverListItemPrefab, serverListContainer);
-        var item = itemGO.GetComponent<ServerListItem>();
-        if (item != null)
-        {
-            item.Initialize(this, server.DisplayName, server.IpAddress, server.Port);
-        }
-    }
+    //    // Create UI entry
+    //    var itemGO = Instantiate(serverListItemPrefab, serverListContainer);
+    //    var item = itemGO.GetComponent<ServerListItem>();
+    //    if (item != null)
+    //    {
+    //        item.Initialize(this, server.DisplayName, server.IpAddress, server.Port);
+    //    }
+    //}
 
     // Called by server list items when clicked
-    public void OnClickServer(string ip, int port)
-    {
-        Debug.Log($"[LOBBY] Selected server {ip}:{port}");
-        // Later: connect as client to this address:port using Netcode for GameObjects
-        // e.g., Set IP on transport, StartClient, then load Game scene
-    }
+    //public void OnClickServer(string ip, int port)
+    //{
+    //    Debug.Log($"[LOBBY] Selected server {ip}:{port}");
+    //}
 
     // Button: HOST GAME
     public void OnHostClicked()
     {
         Debug.Log("[LOBBY] Host button clicked.");
 
-        // Configure host transport; for LAN this can be 0.0.0.0 so others can connect.
+        // Configure host transport
         var bootstrap = FindObjectOfType<NetworkBootstrap>();
         if (bootstrap == null)
         {
@@ -181,15 +179,12 @@ public class LobbyUIController : MonoBehaviour
         // Subscribe to connection callbacks (client-side)
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-
-        // We don't manually load Game here; host's NetworkSceneManager.LoadScene will pull us in.
     }
 
     private void OnClientConnected(ulong clientId)
     {
         if (!NetworkManager.Singleton.IsClient) return;
 
-        // This callback fires on both host & clients. Only care when it's OUR local client.
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             Debug.Log($"[LOBBY] Connected to host as client {clientId}.");

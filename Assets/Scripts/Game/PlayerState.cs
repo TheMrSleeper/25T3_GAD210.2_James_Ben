@@ -22,7 +22,7 @@ public class PlayerState : NetworkBehaviour
     {
         if (IsServer && !_registeredWithGameManager)
         {
-            // Register with GameManager once it exists (handles host & clients)
+            // Register with GameManager once it exists
             StartCoroutine(RegisterWithGameManagerWhenReady());
         }
 

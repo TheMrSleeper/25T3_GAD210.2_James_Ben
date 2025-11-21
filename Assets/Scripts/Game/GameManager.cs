@@ -27,7 +27,7 @@ public class EventOption
     // Tag for analytics / debugging
     public EventOptionTag tag = EventOptionTag.Neutral;
 
-    // Effects on the ACTIVE player (the one making the choice)
+    // Effects on the ACTIVE player
     public int selfSuppliesDelta;
     public int selfIntegrityDelta;
 
@@ -108,7 +108,7 @@ public class GameManager : NetworkBehaviour
     private void OnClientConnected(ulong clientId)
     {
         Debug.Log($"[GameManager] Client connected: {clientId}");
-        // PlayerState will call RegisterPlayer when it spawns
+        // PlayerState calls RegisterPlayer when it spawns
     }
 
     private void OnClientDisconnected(ulong clientId)
@@ -274,11 +274,6 @@ public class GameManager : NetworkBehaviour
         if (integrity <= 0)
             return 0;
 
-        // Basic heuristic:
-        // - High integrity + some supplies: 100%
-        // - Mid integrity: mid-range chance, boosted by supplies
-        // - Low integrity: low base, slightly boosted by supplies
-
         float baseChance;
 
         if (integrity >= 80)
@@ -297,7 +292,7 @@ public class GameManager : NetworkBehaviour
         {
             baseChance = 20f + supplies * 3f;
         }
-        else // integrity between 1 and 19
+        else
         {
             baseChance = 5f + supplies * 2f;
         }
@@ -308,7 +303,6 @@ public class GameManager : NetworkBehaviour
 
     private bool RollFinalSurvival(int integrity, int supplies, int survivalChance)
     {
-        // Hard rules first
         if (integrity <= 0)
             return false;
 
@@ -327,17 +321,13 @@ public class GameManager : NetworkBehaviour
 
     private void ComputeFuzzyEstimate(int trueValue, out string category)
     {
-        // Base categorisation
-        // 0–30  => LOW
-        // 31–70 => MID
-        // 71–100 => HIGH
         string baseCat;
         if (trueValue <= 30) baseCat = "LOW";
         else if (trueValue <= 70) baseCat = "MID";
         else baseCat = "HIGH";
 
         // Add some "sensor noise": 20% chance to wobble to neighbouring category
-        float roll = Random.value; // 0–1
+        float roll = Random.value;
         if (roll < 0.2f)
         {
             if (baseCat == "LOW")
@@ -435,7 +425,6 @@ public class GameManager : NetworkBehaviour
         {
             // Sent the message
             GameUIController.Instance.SetRemoteMessageStatus("TRANSMISSION SENT.");
-            // DO NOT record this as "last message from other"
         }
         else
         {
