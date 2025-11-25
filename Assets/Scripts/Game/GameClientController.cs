@@ -120,20 +120,30 @@ public class GameClientController : MonoBehaviour
 
             case TurnPhase.EventResolution:
                 if (isActive)
-                    GameUIController.Instance.ShowEventPanel();
+                {
+                    GameUIController.Instance.ShowEventPanel(true);
+                    PlayerState.LocalInstance?.RefreshLocalHud();
+                }
                 else
+                {
                     GameUIController.Instance.ShowWaitingForTurnPanel();
+                }
 
                 GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
 
             case TurnPhase.MessageTyping:
                 GameUIController.Instance.ShowMessagePanel(isActive);
+                if (isActive)
+                {
+                    PlayerState.LocalInstance?.RefreshLocalHud();
+                }
                 GameUIController.Instance.SetBottomBarDefaultMode();
                 break;
 
             case TurnPhase.GameOver:
                 GameUIController.Instance.SetBottomBarGameOverMode();
+                PlayerState.LocalInstance?.RefreshLocalHud();
                 break;
 
             default:

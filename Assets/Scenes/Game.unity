@@ -1210,7 +1210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5677,6 +5677,7 @@ MonoBehaviour:
   buttonReturnToMenu: {fileID: 1673108029}
   buttonPlayAgain: {fileID: 395361967}
   panelEvent: {fileID: 1306493190}
+  panelEventOptions: {fileID: 381327124}
   panelWaiting: {fileID: 1051826777}
   panelMessage: {fileID: 1519550860}
   textEventTitle: {fileID: 1920904232}
@@ -7043,9 +7044,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[2].description
-      value: "[CRITICAL WARNING] OXYGEN SCRUBBERS UNRESPONSIVE.\nCO\u2082 extraction
-        cycles failing.\nAtmospheric mix degrading.\nTotal filter system failure
-        imminent.\nImmediate repairs required."
+      value: '[CRITICAL WARNING] OXYGEN SCRUBBERS UNRESPONSIVE.
+
+        CO2 extraction
+        cycles failing.
+
+        Atmospheric mix degrading.
+
+        Total filter
+        system failure imminent.
+
+        Immediate repairs required.'
       objectReference: {fileID: 0}
     - target: {fileID: 6590353027937093236, guid: e556c8fbc6713844b9b2d17177f38b75, type: 3}
       propertyPath: events.Array.data[3].description

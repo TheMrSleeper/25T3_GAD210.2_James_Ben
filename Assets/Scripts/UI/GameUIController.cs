@@ -25,6 +25,7 @@ public class GameUIController : MonoBehaviour
 
     [Header("Center Panels")]
     [SerializeField] private GameObject panelEvent;
+    [SerializeField] private GameObject panelEventOptions;
     [SerializeField] private GameObject panelWaiting;
     [SerializeField] private GameObject panelMessage;
 
@@ -116,15 +117,17 @@ public class GameUIController : MonoBehaviour
 
     #region Center Panel Modes
 
-    public void ShowEventPanel()
+    public void ShowEventPanel(bool isLocalActive)
     {
+        // Turn central panels on/off
         if (panelEvent != null) panelEvent.SetActive(true);
         if (panelWaiting != null) panelWaiting.SetActive(false);
         if (panelMessage != null) panelMessage.SetActive(false);
         if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+        if (panelGameOver != null) panelGameOver.SetActive(false);
 
-        // Make sure the last-transmission label is always in sync
-        UpdateLastMessageLabel();
+        if (panelEventOptions != null)
+            panelEventOptions.SetActive(isLocalActive);
     }
 
     public void ShowWaitingPanel()
@@ -201,6 +204,8 @@ public class GameUIController : MonoBehaviour
         if (panelEvent != null) panelEvent.SetActive(false);
         if (panelMessage != null) panelMessage.SetActive(false);
         if (panelWaitForPlayers != null) panelWaitForPlayers.SetActive(false);
+        if (panelGameOver != null) panelGameOver.SetActive(false);
+
         if (panelWaiting != null) panelWaiting.SetActive(true);
     }
 

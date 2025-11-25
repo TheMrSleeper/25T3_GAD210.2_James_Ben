@@ -259,7 +259,7 @@ public class GameManager : NetworkBehaviour
         other.SurvivalChance.Value = ComputeSurvivalChance(other.Integrity.Value, other.Supplies.Value);
 
         // Update fuzzy estimates for both clients
-        BroadcastOtherEstimates();
+        //BroadcastOtherEstimates();
 
         Debug.Log($"[GameManager] After option {optionIndex}: " +
                   $"Self (CID {senderClientId}) -> Supplies {self.Supplies.Value}, Integrity {self.Integrity.Value}, Survival {self.SurvivalChance.Value}% | " +
@@ -443,7 +443,6 @@ public class GameManager : NetworkBehaviour
 
         _turnCounts[justFinishedClientId]++;
 
-        // Check if both players have hit max turns
         bool allDone = (_players.Count >= 2);
         if (allDone)
         {
@@ -470,6 +469,8 @@ public class GameManager : NetworkBehaviour
 
         // Select a new event
         SelectRandomEvent();
+
+        BroadcastOtherEstimates();
 
         CurrentPhase.Value = TurnPhase.EventResolution;
         Debug.Log($"[GameManager] New turn. Active player: {nextId}");

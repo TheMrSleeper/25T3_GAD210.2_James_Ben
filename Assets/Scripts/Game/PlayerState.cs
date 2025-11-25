@@ -18,29 +18,26 @@ public class PlayerState : NetworkBehaviour
 
     private bool _registeredWithGameManager = false;
 
+    public static PlayerState LocalInstance { get; private set; }
+
     public override void OnNetworkSpawn()
     {
         if (IsServer && !_registeredWithGameManager)
         {
-            // Register with GameManager once it exists
             StartCoroutine(RegisterWithGameManagerWhenReady());
         }
 
         if (IsOwner)
         {
-            // Subscribe to stat changes to update local HUD
-            Integrity.OnValueChanged += OnStatsChanged;
-            Supplies.OnValueChanged += OnStatsChanged;
-            SurvivalChance.OnValueChanged += OnStatsChanged;
+            LocalInstance = this;
 
-            // Initial HUD update
-            OnStatsChanged(Integrity.Value, Integrity.Value);
+            // Initial HUD update (uses current values, but only once)
+            RefreshLocalHud();
         }
     }
 
     private IEnumerator RegisterWithGameManagerWhenReady()
     {
-        // Wait until GameManager.Instance is available on the server
         while (GameManager.Instance == null)
         {
             yield return null;
@@ -56,30 +53,30 @@ public class PlayerState : NetworkBehaviour
 
     private void OnDestroy()
     {
-        if (IsOwner)
+        if (IsOwner && LocalInstance == this)
         {
-            Integrity.OnValueChanged -= OnStatsChanged;
-            Supplies.OnValueChanged -= OnStatsChanged;
-            SurvivalChance.OnValueChanged -= OnStatsChanged;
+            LocalInstance = null;
         }
     }
 
-    private void OnStatsChanged(int oldValue, int newValue)
+    public void RefreshLocalHud()
     {
-        if (!IsOwner) return;
+        if (!IsOwner || GameUIController.Instance == null) return;
 
+        int integrity = Integrity.Value;
+        int supplies = Supplies.Value;
         int sc = SurvivalChance.Value;
-        string survivalText = "UNKNOWN";
 
+        string survivalText;
         if (sc >= 80) survivalText = "HIGH";
         else if (sc >= 50) survivalText = "MEDIUM";
         else if (sc >= 20) survivalText = "LOW";
         else if (sc > 0) survivalText = "CRITICAL";
         else survivalText = "NONE";
 
-        GameUIController.Instance?.UpdateLocalStats(
-            Integrity.Value,
-            Supplies.Value,
+        GameUIController.Instance.UpdateLocalStats(
+            integrity,
+            supplies,
             survivalText
         );
     }
