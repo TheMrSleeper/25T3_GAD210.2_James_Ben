@@ -36,6 +36,12 @@ public class LobbyUIController : MonoBehaviour
     {
         EnsureNetworkManager();
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayLobbyMusic();
+            AudioManager.Instance.StopGameAmbience();
+        }
+
         if (defaultSelectedButton != null)
         {
             EventSystem.current?.SetSelectedGameObject(defaultSelectedButton);

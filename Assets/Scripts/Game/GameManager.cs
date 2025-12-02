@@ -94,6 +94,13 @@ public class GameManager : NetworkBehaviour
             // Set host IP hint once, from NetworkBootstrap
             HostIpHint.Value = NetworkBootstrap.LocalIpAddress;
         }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopMusic();
+            AudioManager.Instance.PlayGameAmbience();
+            AudioManager.Instance.StopAlarmLoop();
+        }
     }
 
     private void OnDestroy()
@@ -148,6 +155,15 @@ public class GameManager : NetworkBehaviour
 
         SelectRandomEvent();
         CurrentPhase.Value = TurnPhase.EventResolution;
+
+        var rpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new[] { hostId }
+            }
+        };
+        PlayEventAlarmClientRpc(rpcParams);
 
         // Initial fuzzy estimate for both players
         BroadcastOtherEstimates();
@@ -267,6 +283,8 @@ public class GameManager : NetworkBehaviour
 
         // Transition to message-typing phase
         CurrentPhase.Value = TurnPhase.MessageTyping;
+
+        StopEventAlarmClientRpc();
     }
 
     private int ComputeSurvivalChance(int integrity, int supplies)
@@ -470,6 +488,16 @@ public class GameManager : NetworkBehaviour
         // Select a new event
         SelectRandomEvent();
 
+        // Only play alarm for the new active player
+        var rpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new[] { nextId }
+            }
+        };
+        PlayEventAlarmClientRpc(rpcParams);
+
         BroadcastOtherEstimates();
 
         CurrentPhase.Value = TurnPhase.EventResolution;
@@ -584,6 +612,8 @@ public class GameManager : NetworkBehaviour
         // Set phase to GameOver
         CurrentPhase.Value = TurnPhase.GameOver;
         Debug.Log("[GameManager] Final outcome resolved. GameOver.");
+
+        StopEventAlarmClientRpc();
     }
 
     [ClientRpc]
@@ -592,5 +622,19 @@ public class GameManager : NetworkBehaviour
         if (GameUIController.Instance == null) return;
 
         GameUIController.Instance.ShowGameOver(localSummary, otherSummary, overallSummary);
+    }
+
+    [ClientRpc]
+    private void PlayEventAlarmClientRpc(ClientRpcParams clientRpcParams = default)
+    {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayAlarmLoop();
+    }
+
+    [ClientRpc]
+    private void StopEventAlarmClientRpc(ClientRpcParams clientRpcParams = default)
+    {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.StopAlarmLoop();
     }
 }

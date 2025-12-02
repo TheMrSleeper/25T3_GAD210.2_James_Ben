@@ -13,6 +13,12 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMenuMusic();
+            AudioManager.Instance.StopGameAmbience();
+        }
+
         // Ensure menu starts in a predictable state
         if (panelHowTo != null) panelHowTo.SetActive(false);
 
