@@ -176,7 +176,9 @@ public class GameUIController : MonoBehaviour
 
         if (textOption3 != null)
         {
-            textOption3.transform.parent.gameObject.SetActive(!string.IsNullOrEmpty(option3));
+            GameObject option3Object = textOption3.gameObject;
+
+            option3Object.SetActive(!string.IsNullOrEmpty(option3));
             textOption3.text = option3 ?? "";
         }
     }

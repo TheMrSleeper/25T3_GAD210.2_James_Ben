@@ -22,6 +22,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip typingLoop;
     [SerializeField] private AudioClip eventAlarmLoop;
 
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
